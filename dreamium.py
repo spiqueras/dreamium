@@ -4,7 +4,7 @@
 import random
 import curses
 from enum import Enum
-VERSION = 0.1
+VERSION = "0.1.1"
 
 class Color(Enum):
   RED    = 1
@@ -584,6 +584,7 @@ class NightmareKeyState(GameState):
         game.hand.highlight_keys = False
         return game.fill_hand()
     elif opt == 6:
+      game.hand.highlight_keys = False
       return NightmareState
     return NightmareKeyState
 
