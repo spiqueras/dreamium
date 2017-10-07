@@ -1,6 +1,8 @@
 # dreamium
 A terminal-based Onirim clone
 
+![Example](https://github.com/spiqueras/dreamium/blob/master/screenshot.png)
+
 Requirements
 ------------
 - Python 3
