@@ -16,7 +16,7 @@ Open your terminal, type
 
 	python3 dreamium.py
   
-Resize if necessary. Actions are inputted used the numpad.
+Resize if necessary. Actions are inputted using the numpad.
 
 #### Q: How do I exit?
 
