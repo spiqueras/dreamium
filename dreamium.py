@@ -27,54 +27,47 @@ class CardType(IntEnum):
     BACK = 6
 
 
-_ASCII_ = {}
-
-_ASCII_[CardType.SUN] = """\
+_ASCII_ = {
+    CardType.SUN: """\
 ╭─┐
 │☀│
-└─╯""".splitlines()
-
-_ASCII_[CardType.MOON] = """\
+└─╯""".splitlines(),
+    CardType.MOON: """\
 ╭─┐
 │☽│
-└─╯""".splitlines()
-
-_ASCII_[CardType.KEY] = """\
+└─╯""".splitlines(),
+    CardType.KEY: """\
 ╭─┐
 │⚷│
-└─╯""".splitlines()
-
-_ASCII_[CardType.DOOR] = """\
+└─╯""".splitlines(),
+    CardType.DOOR: """\
 ╭─┐
 │╶│
-└─╯""".splitlines()
-
-_ASCII_[CardType.NIGHTMARE] = """\
+└─╯""".splitlines(),
+    CardType.NIGHTMARE: """\
 ╭─┐
 │☠│
-└─╯""".splitlines()
-
-_ASCII_[CardType.BACK] = """\
+└─╯""".splitlines(),
+    CardType.BACK: """\
 ╭╥┐
 ╞╬╡
-└╨╯""".splitlines()
+└╨╯""".splitlines(),
+}
 
-_ASCII_REDUCED_ = {}
-
-_ASCII_REDUCED_[CardType.SUN] = """\
+_ASCII_REDUCED_ = {
+    CardType.SUN: """\
 ╭
 ☀
-└""".splitlines()
-
-_ASCII_REDUCED_[CardType.MOON] = """\
+└""".splitlines(),
+    CardType.MOON: """\
 ╭
 │
-☽""".splitlines()
-
-_ASCII_REDUCED_[CardType.KEY] = """\
+☽""".splitlines(),
+    CardType.KEY: """\
 ⚷
 │
-└""".splitlines()
+└""".splitlines(),
+}
 
 _CURSES_COLORS_ = {
     Color.GREEN: 3,
@@ -738,29 +731,23 @@ class GameError(IntEnum):
     NO_CARDS = 6
 
 
+@dataclass
 class Game:
-    hand = None
-    path = None
-    deck = None
-    discard = None
-    doors = None
-    keydiscard = None
-    selected = -1
-    state = None
-    draw_discard = False
-    info = None
-    error = None
+    n_turn: int = 0
+    hand: Hand = field(default_factory=Hand)
+    path: Path = field(default_factory=Path)
+    deck: Deck = field(default_factory=Deck)
+    discard: Discard = field(default_factory=Discard)
+    doors: Doors = field(default_factory=Doors)
+    keydiscard: KeyDiscard = field(default_factory=KeyDiscard)
+    selected: int = -1
+    state: typing.Type[GameState] = Main1State
+    draw_discard: bool = False
+    info: GameInfo = GameInfo.NOTHING
+    error: GameError = GameError.NOTHING
+    seed: int = field(init=False)
 
-    def __init__(self):
-        self.n_turn = 0
-        self.deck = Deck()
-        self.hand = Hand()
-        self.path = Path()
-        self.discard = Discard()
-        self.doors = Doors()
-        self.keydiscard = KeyDiscard()
-        self.info = GameInfo.NOTHING
-        self.error = GameError.NOTHING
+    def __post_init__(self):
         self.seed = random.randrange(16**8)
 
     def start(self):
@@ -969,7 +956,7 @@ class UI:
             self.game.discard.draw(self.wins[4])
 
             self.stdscr.addstr(19, 49, f"Dreamium V{VERSION}", curses.color_pair(6))
-            self.stdscr.addstr(20, 49, f"Seed {self.game.seed:#08x}", curses.color_pair(6))
+            self.stdscr.addstr(19, 1, f"Seed {self.game.seed:#08x}", curses.color_pair(6))
             for win in self.wins:
                 win.refresh()
             self.stdscr.refresh()
